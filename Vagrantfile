@@ -15,13 +15,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #config.vm.synced_folder "bats/libexec", "/home/vagrant/libexec"
   #config.vm.synced_folder "bats/tests", "/home/vagrant/tests"
 
-  # Enable provisioning with Puppet stand alone.  Puppet manifests
-  # are contained in a directory path relative to this Vagrantfile.
-  # You will need to create the manifests directory and a manifest in
-  # the file centot64.pp in the manifests_path directory.
-  #config.vm.provision :puppet do |puppet|
-  #  puppet.manifests_path = "manifests"
-  #  puppet.manifest_file  = "site.pp"
-  #  puppet.module_path = "modules"
-  #end
+  config.vm.provision :puppet do |puppet|
+    puppet.manifests_path = "manifests"
+    puppet.manifest_file  = "site.pp"
+    puppet.module_path = "modules"
+  end
 end
