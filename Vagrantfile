@@ -5,16 +5,43 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "centos64"
-  config.vm.box_url = "http://packages.vstone.eu/vagrant-boxes/centos-6.x-64bit-latest.box"
 
-  config.vm.network :private_network, ip: "192.168.101.111"
+  # The url from where the 'config.vm.box' box will be fetched if it
+  # doesn't already exist on the user's system.
   
-  config.vm.synced_folder "www", "/var/www/html"
-  #config.vm.synced_folder "bats/bin", "/home/vagrant/bin"
-  #config.vm.synced_folder "bats/libexec", "/home/vagrant/libexec"
-  #config.vm.synced_folder "bats/tests", "/home/vagrant/tests"
+  # The box appears to be down, alternative listed below:
+  #config.vm.box_url = "http://packages.vstone.eu/vagrant-boxes/centos-6.x-64bit-latest.box"
+  config.vm.box_url = "http://developer.nrel.gov/downloads/vagrant-boxes/CentOS-6.4-x86_64-v20130731.box"
 
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # config.vm.network :forwarded_port, guest: 80, host: 8080
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  config.vm.network :private_network, ip: "192.168.56.10"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network :public_network
+
+  # Share an additional folder to the guest VM. The first argument is
+  # the path on the host to the actual folder. The second argument is
+  # the path on the guest to mount the folder. And the optional third
+  # argument is a set of non-required options.
+  config.vm.synced_folder "www", "/var/www/html"
+  config.vm.synced_folder "bats/bin", "/home/vagrant/bin"
+  config.vm.synced_folder "bats/libexec", "/home/vagrant/libexec"
+  config.vm.synced_folder "bats/tests", "/home/vagrant/tests"
+
+  # Enable provisioning with Puppet stand alone.  Puppet manifests
+  # are contained in a directory path relative to this Vagrantfile.
+  # You will need to create the manifests directory and a manifest in
+  # the file centot64.pp in the manifests_path directory.
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "manifests"
     puppet.manifest_file  = "site.pp"
